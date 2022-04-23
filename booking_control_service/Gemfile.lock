@@ -1,0 +1,37 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    amq-protocol (2.3.2)
+    bunny (2.19.0)
+      amq-protocol (~> 2.3, >= 2.3.1)
+      sorted_set (~> 1, >= 1.0.2)
+    connection_pool (2.2.5)
+    faraday (2.2.0)
+      faraday-net_http (~> 2.0)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (2.0.2)
+    json (2.6.1)
+    rack (2.2.3)
+    rbtree (0.4.5)
+    redis (4.6.0)
+    ruby2_keywords (0.0.5)
+    set (1.0.2)
+    sidekiq (6.4.2)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
+    sorted_set (1.0.3)
+      rbtree
+      set (~> 1.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  bunny
+  faraday
+  json
+  sidekiq
+
+BUNDLED WITH
+   2.3.12
