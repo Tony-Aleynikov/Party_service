@@ -1,0 +1,28 @@
+services:
+  booking_control_services:
+    build: .
+    volumes:
+    - .:/app
+    command: ruby booking_control_service.rb
+    stdin_open: true
+    tty: true
+    ports:
+      - "3002:3002"
+    depends_on:
+     - sidekiq
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
