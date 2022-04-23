@@ -1,5 +1,12 @@
 class EntriesController < ApplicationController
   def standart
+
+  end
+
+  def vip
+  end
+
+  def exit
     ticket_information = EntryService.get_data(params)  #запрос данных от первого сервиса
 
     EntryService.add_entry(ticket_information, true, "outside") #запись в базу
@@ -8,11 +15,5 @@ class EntriesController < ApplicationController
 
     rescue Faraday::Error
       return render json: {result: "Не удалось получить информацию о билете" }
-  end
-
-  def vip
-  end
-
-  def exit
   end
 end
