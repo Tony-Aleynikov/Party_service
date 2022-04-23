@@ -6,7 +6,6 @@ class EntryService
   end
 
   def self.add_entry(ticket_information, result, status)
-
     Entry.create(ticket_number: ticket_information["ticket_number"],
                  ticket_category: ticket_information["ticket_category"] ,
                  full_name: ticket_information["full_name"]
@@ -16,6 +15,30 @@ class EntryService
                  document_type: ticket_information["document_type"],
                  document_number: ticket_information["document_number"],
                  event_name: ticket_information ["event_name"] )
+  end
+
+  def self.standart_check(ticket_information, ticket_entry)
+    check(ticket_information, ticket_entry)
+  end
+
+  def self.vip_check(ticket_information, ticket_entry)
+    if params["ticket_category"] == "standart"
+      EntryService.add_entry(ticket_information, false, "outside")
+      return render json: {result: false }
+    end
+    check(ticket_information, ticket_entry)
+  end
+
+  def check(ticket_information, ticket_entry)
+    if ticket_information.status == "block" || ticket_entry&.status == "inside"
+      EntryService.add_entry(ticket_information, false, "inside")
+      return render json: {result: false }
+    end
+
+    if ticket_information.event_date != Time.current.strftime("%m/%d/%Y")
+      EntryService.add_entry(ticket_information, false, "outside")
+      return render json: {result: false }
+    end
   end
 
   private
