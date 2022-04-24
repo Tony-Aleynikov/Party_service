@@ -1,4 +1,4 @@
-class TicketSellingService
+class ReservationService
 
   def self.event_search(params)
     if Event.find_by(event_date: params["event_date"]) == nil #если мероприятия нет, то создать мероприятие
