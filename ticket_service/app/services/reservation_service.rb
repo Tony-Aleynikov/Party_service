@@ -46,16 +46,4 @@ class ReservationService
      end
   end
 
-  def self.booking_timer(ticket_number)
-    ticket = Ticket.find_by(ticket_number: ticket_number)
-    connection = Bunny.new('amqp://guest:guest@rabbitmq')
-    connection.start
-
-    channel  = connection.create_channel
-    exchange = channel.default_exchange
-
-    queue_name = 'change_ticket_status'
-    exchange.publish({ ticket_number: ticket_number, booking_time: ticket.created_at }.to_json, routing_key: queue_name)
-  end
-
 end

@@ -39,8 +39,8 @@ services:
     stdin_open: true
     tty: true
     ports:
-      - "3001:3001"
-    command: rails server -p 3001 -b 0.0.0.0
+      - "3002:3002"
+    command: rails server -p 3002 -b 0.0.0.0
     depends_on:
       - ts_db
     environment:

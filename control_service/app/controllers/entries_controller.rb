@@ -1,11 +1,11 @@
 class EntriesController < ApplicationController
   def standart
-    ticket_information = EntryService.get_data(params)  #запрос данных от первого сервиса
+    ticket_information = EntryService.get_data(params)                               #запрос данных от первого сервиса
     ticket_entry       = Entry.find_by(ticket_number: params["ticket_number"])&.last #поиск записи с таким номером билета
 
-    EntryService.standart_check(ticket_information, ticket_entry) #проверка при входе
+    EntryService.standart_check(ticket_information, ticket_entry)                    #проверка при входе
 
-    EntryService.add_entry(ticket_information, true, "inside") #запись в базу
+    EntryService.add_entry(ticket_information, true, "inside")                       #запись в базу
 
     render json: {result: true }
 
@@ -14,12 +14,12 @@ class EntriesController < ApplicationController
   end
 
   def vip
-    ticket_information = EntryService.get_data(params)  #запрос данных от первого сервиса
+    ticket_information = EntryService.get_data(params)                               #запрос данных от первого сервиса
     ticket_entry       = Entry.find_by(ticket_number: params["ticket_number"])&.last #поиск записи с таким номером билета
 
-    EntryService.vip_check(ticket_information, ticket_entry) #проверка при входе
+    EntryService.vip_check(ticket_information, ticket_entry)                         #проверка при входе
 
-    EntryService.add_entry(ticket_information, true, "inside") #запись в базу
+    EntryService.add_entry(ticket_information, true, "inside")                       #запись в базу
 
     render json: {result: true }
 
@@ -28,9 +28,9 @@ class EntriesController < ApplicationController
   end
 
   def exit
-    ticket_information = EntryService.get_data(params)  #запрос данных от первого сервиса
+    ticket_information = EntryService.get_data(params)                              #запрос данных от первого сервиса
 
-    EntryService.add_entry(ticket_information, true, "outside") #запись в базу
+    EntryService.add_entry(ticket_information, true, "outside")                     #запись в базу
 
     render json: {result: true }
 
