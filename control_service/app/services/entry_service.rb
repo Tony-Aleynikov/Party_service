@@ -22,7 +22,7 @@ class EntryService
   end
 
   def self.vip_check(ticket_information, ticket_entry)
-    if params["ticket_category"] == "standart"
+    if ticket_information["ticket_category"] == "standart"
       EntryService.add_entry(ticket_information, false, "outside")
       return render json: {result: false }
     end

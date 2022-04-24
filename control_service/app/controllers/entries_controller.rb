@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  def standart
+  def standart #params {ticket_number}
     ticket_information = EntryService.get_data(params)                               #запрос данных от первого сервиса
     ticket_entry       = Entry.find_by(ticket_number: params["ticket_number"])&.last #поиск записи с таким номером билета
 

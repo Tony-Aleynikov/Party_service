@@ -6,6 +6,8 @@ class JournalController < ApplicationController
   end
 
   def sorted_entries
-    EntryService.sorting(params))
+    entries = EntryService.sorting(params))
+
+    render json: { entries: entries }
   end
 end
