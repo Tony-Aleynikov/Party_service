@@ -1,9 +1,9 @@
 services:
   sidekiq:
-    build: ./booking_control_service
-    command: bundle exec sidekiq -r change_order_status.rb
+    build: ./ticket_service
+    command: bundle exec sidekiq
     volumes:
-      - ./booking_control_service:/app
+      - ./ticket_service:/app
     environment:
       REDIS_URL: redis://redis:6379/0
 
@@ -12,13 +12,6 @@ services:
     volumes:
       - redis:/data
 
-  rabbitmq:
-    image: rabbitmq:management-alpine
-    ports:
-      - 15672:15672
-    volumes:
-      - rabbit:/var/lib/rabbitmq
-
   control_service:
     build: ./control_service
     volumes:
@@ -26,8 +19,8 @@ services:
     stdin_open: true
     tty: true
     ports:
-      - "3003:3003"
-    command: rails server -p 3003 -b 0.0.0.0
+      - "3001:3001"
+    command: rails server -p 3001 -b 0.0.0.0
     depends_on:
       - cs_db
 
@@ -50,6 +43,8 @@ services:
     command: rails server -p 3001 -b 0.0.0.0
     depends_on:
       - ts_db
+    environment:
+      REDIS_URL: redis://redis:6379/0
 
   ts_db:
     image: postgres:11.5
@@ -59,20 +54,8 @@ services:
     volumes:
       - postgres2:/var/lib/postgresql/data
 
-  booking_control_services:
-    build: ./booking_control_service
-    volumes:
-      - ./booking_control_service:/app
-    command: ruby booking_control_service.rb
-    stdin_open: true
-    tty: true
-    ports:
-      - "3002:3002"
-    depends_on:
-      - sidekiq
 
 volumes:
   postgres1:
   postgres2:
-  rabbit:
   redis:
