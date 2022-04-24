@@ -20,10 +20,10 @@ class ReservationService
 
   def self.create_ticket(params, ticket_number, booking_number)
     Ticket.create(ticket_number: ticket_number,
-    event_date: params["event_date"],
-    ticket_category: params["ticket_category"],
-    booking_number: booking_number,
-    status: "booked")
+                  event_date: params["event_date"],
+                  ticket_category: params["ticket_category"],
+                  booking_number: booking_number,
+                  status: "booked")
   end
 
   def self.update_number_free_tickets(params)
@@ -44,6 +44,18 @@ class ReservationService
       vip_tickets = Event.find_by(event_date: params["event_date"]).vip_tickets
       2000 + (50 - vip_tickets)/5 * 200
      end
+  end
+
+  def self.booking_timer(ticket_number)
+    ticket = Ticket.find_by(ticket_number: ticket_number)
+    connection = Bunny.new('amqp://guest:guest@rabbitmq')
+    connection.start
+
+    channel  = connection.create_channel
+    exchange = channel.default_exchange
+
+    queue_name = 'change_ticket_status'
+    exchange.publish({ ticket_number: ticket_number, booking_time: ticket.created_at }.to_json, routing_key: queue_name)
   end
 
 end

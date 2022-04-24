@@ -8,10 +8,10 @@ connection = Bunny.new('amqp://guest:guest@rabbitmq')
 connection.start
 
 channel = connection.create_channel
-queue = channel.queue('change_status_order', auto_delete: true)
+queue = channel.queue('change_ticket_status', auto_delete: true)
 
 queue.subscribe do |_delivery_info, _metadata, payload|
-  # ticket_information = JSON.parse(payload) #=> { ticket_number: <ticket number>, booking_time: <time> }
+  ticket_information = JSON.parse(payload) #=> { ticket_number: <ticket number>, booking_time: <time> }
   # BookingControlService.change_status_order(ticket_information)
 end
 
