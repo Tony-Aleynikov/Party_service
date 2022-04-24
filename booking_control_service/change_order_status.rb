@@ -1,7 +1,15 @@
 require 'sidekiq'
-include Sidekiq::Worker
+
+Sidekiq.configure_client do |config|
+  config.redis = { db: 1 }
+end
+
+Sidekiq.configure_client do |config|
+  config.redis = { db: 1 }
+end
 
 class BookingControlService
+  include Sidekiq::Worker
 
   def change_status_order(ticket_information) #=> { ticket_number: <ticket number>, booking_time: <time> }
     time = ticket_information["booking_time"] + 300

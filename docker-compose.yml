@@ -1,7 +1,7 @@
 services:
   sidekiq:
     build: ./booking_control_service
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -r change_order_status.rb
     volumes:
       - ./booking_control_service:/app
     environment:

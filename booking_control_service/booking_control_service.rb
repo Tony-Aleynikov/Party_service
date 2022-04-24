@@ -11,7 +11,7 @@ channel = connection.create_channel
 queue = channel.queue('change_ticket_status', auto_delete: true)
 
 queue.subscribe do |_delivery_info, _metadata, payload|
-  ticket_information = JSON.parse(payload) #=> { ticket_number: <ticket number>, booking_time: <time> }
+  ticket_information = JSON.parse(payload) #=> { ticket_number: <ticket number>, booking_time: <created_at> }
   # BookingControlService.change_status_order(ticket_information)
 end
 
