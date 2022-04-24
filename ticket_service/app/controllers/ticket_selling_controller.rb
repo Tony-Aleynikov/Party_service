@@ -25,5 +25,8 @@ class TicketSellingController < ApplicationController
   end
 
   def buying_ticket
+    Ticket.find_by(booking_number: params["booking_number"]).update(status: "bought")
+    render json: {result: "Билет куплен"}
   end
+
 end
