@@ -22,7 +22,6 @@ class EntryService
   end
 
   def self.vip_check(ticket_information, ticket_entry)
-    byebug
     if ticket_information["ticket_category"] == "standart"
       EntryService.add_entry(ticket_information, false, "outside")
       return {result: false }

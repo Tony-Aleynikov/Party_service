@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'ticket_information/ticket'
-  get 'ticket_block/block'
+  post 'ticket_block/block'
   get 'ticket_selling/reservation'
   get 'ticket_selling/cancel_reservation'
   get 'ticket_selling/buying_ticket'

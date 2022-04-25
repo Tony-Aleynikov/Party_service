@@ -12,6 +12,7 @@ class JournalService
     entries = entries.where( document_number: params["document_number"]) if params["document_number"]
     entries = entries.where( event_name:      params["event_name"])      if params["event_name"]
     entries = entries.where( created_at:      params["created_at"])      if params["created_at"]
+    entries
   end
 
 end
