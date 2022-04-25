@@ -1,0 +1,61 @@
+services:
+  sidekiq:
+    build: ./ticket_service
+    command: bundle exec sidekiq
+    volumes:
+      - ./ticket_service:/app
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis:/data
+
+  control_service:
+    build: ./control_service
+    volumes:
+      - ./control_service:/app
+    stdin_open: true
+    tty: true
+    ports:
+      - "3001:3001"
+    command: rails server -p 3001 -b 0.0.0.0
+    depends_on:
+      - cs_db
+
+  cs_db:
+    image: postgres:11.5
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres1:/var/lib/postgresql/data
+
+  ticket_service:
+    build: ./ticket_service
+    volumes:
+      - ./ticket_service:/app
+    stdin_open: true
+    tty: true
+    ports:
+      - "3002:3002"
+    command: rails server -p 3002 -b 0.0.0.0
+    depends_on:
+      - ts_db
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
+  ts_db:
+    image: postgres:11.5
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres2:/var/lib/postgresql/data
+
+
+volumes:
+  postgres1:
+  postgres2:
+  redis:
