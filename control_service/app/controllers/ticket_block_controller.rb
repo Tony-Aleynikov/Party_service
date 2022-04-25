@@ -1,6 +1,7 @@
 class TicketBlockController < ApplicationController
   def block
-    Faraday.post(ENV["TICKET_BUYING_SERVICE_URL"], {ticket_number: params["ticket_number"], password: "123"})
+    Faraday.post( "http://ticket_service:3002/ticket_block/block",
+                 {ticket_number: params["ticket_number"], password: "123"} )
     render json: {result: "success" }
 
     rescue

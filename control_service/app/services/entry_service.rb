@@ -1,7 +1,7 @@
 class EntryService
 
   def self.get_data(params)
-    response = Faraday.get(ENV["TICKET_BUYING_SERVICE_URL"], {ticket_number: params["ticket_number"], password: 123})
+    response = Faraday.get("http://ticket_service:3002/ticket_information/ticket", {ticket_number: params["ticket_number"], password: 123})
     transform_data(response)
   end
 
