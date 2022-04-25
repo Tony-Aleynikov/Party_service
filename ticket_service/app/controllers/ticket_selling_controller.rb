@@ -34,7 +34,6 @@ class TicketSellingController < ApplicationController
 
     ticket.update(status: "bought") #продаем билет
     user.tickets << ticket
-    ticket.users << user
 
     render json: {result: "Билет куплен"}
   end

@@ -8,7 +8,7 @@ class EntryService
   def self.add_entry(ticket_information, result, status)
     Entry.create(ticket_number: ticket_information["ticket_number"],
                  ticket_category: ticket_information["ticket_category"] ,
-                 full_name: ticket_information["full_name"]
+                 full_name: ticket_information["full_name"],
                  event_date: ticket_information["event_date"],
                  result: result,
                  status: status,
@@ -22,23 +22,33 @@ class EntryService
   end
 
   def self.vip_check(ticket_information, ticket_entry)
+    byebug
     if ticket_information["ticket_category"] == "standart"
       EntryService.add_entry(ticket_information, false, "outside")
-      return render json: {result: false }
+      return {result: false }
     end
     check(ticket_information, ticket_entry)
   end
 
-  def check(ticket_information, ticket_entry)
-    if ticket_information.status == "block" || ticket_entry&.status == "inside"
-      EntryService.add_entry(ticket_information, false, "inside")
-      return render json: {result: false }
+  def self.check(ticket_information, ticket_entry)
+    if ticket_information["status"] == "block"
+      EntryService.add_entry(ticket_information, false, "outside")
+      return {result: false }
     end
 
-    if ticket_information.event_date != Time.current.strftime("%m/%d/%Y")
-      EntryService.add_entry(ticket_information, false, "outside")
-      return render json: {result: false }
+    if ticket_entry != nil
+      if ticket_entry.status == "inside"
+        EntryService.add_entry(ticket_information, false, "inside")
+        return {result: false }
+      end
     end
+
+    if ticket_information["event_date"] != Time.current.strftime("%m/%d/%Y")
+      EntryService.add_entry(ticket_information, false, "outside")
+      return {result: false }
+    end
+
+    { result: true }
   end
 
   private
