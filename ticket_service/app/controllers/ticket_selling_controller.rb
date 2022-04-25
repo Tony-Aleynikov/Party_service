@@ -27,24 +27,14 @@ class TicketSellingController < ApplicationController
 
 
   def buying_ticket #params { full_name, document_type, document_number, booking_number}
-    user = User.find_by(full_name:       params["full_name"],
-                        document_type:   params["document_type"],
-                        document_number: params["document_number"])
+    user   = ByingTicketService.user_search(params)                   # поиск юзера в базе
+    ticket = Ticket.find_by(booking_number: params["booking_number"]) # поиск билета по номеру брони
 
-    if user == nil
-      user = User.create(full_name: params["full_name"],
-                         document_type: ["document_type"],
-                         document_number["document_number"] )
-    end
+    ByingTicketService.checking_user_tickets(user ,ticket) # проверка, есть ли у юзера билет на сегодщняшнюю дату
 
-    ticket = Ticket.find_by(booking_number: params["booking_number"])
-
-    if user.tickets.find_by(event_date: ticket.event_date)
-      return render json: { result: "У вас уже есть билет на сегодняшнее мероприятие" }
-    end
-
-    ticket.update(status: "bought")
+    ticket.update(status: "bought") #продаем билет
     user.tickets << ticket
+    ticket.users << user
 
     render json: {result: "Билет куплен"}
   end
